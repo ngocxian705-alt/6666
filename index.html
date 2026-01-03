@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HACKER PANEL</title>
+
+<style>
+:root{--main:#00ff99}
+*{box-sizing:border-box;font-family:Courier New,monospace}
+body{margin:0;background:#000;color:var(--main)}
+
+/* TOP */
+.topbar{
+display:flex;justify-content:space-between;align-items:center;
+padding:15px 20px;border-bottom:2px solid var(--main)
+}
+.logo{font-size:22px;font-weight:bold;text-shadow:0 0 12px var(--main)}
+.color-box{display:flex;gap:8px}
+.color{width:22px;height:22px;border:2px solid var(--main);cursor:pointer}
+
+/* MENU */
+.menu{
+display:flex;gap:10px;justify-content:center;
+padding:15px
+}
+.menu button{
+background:#000;color:var(--main);
+border:2px solid var(--main);
+padding:14px 22px;font-size:17px;
+box-shadow:0 0 10px var(--main);cursor:pointer
+}
+
+/* CONTENT */
+.content{display:none;padding:20px}
+.content.active{display:block}
+.box{
+border:2px solid var(--main);
+padding:20px;box-shadow:0 0 20px var(--main)
+}
+
+/* FORM */
+input,select{
+width:100%;padding:14px;margin-bottom:15px;
+background:#000;color:var(--main);
+border:2px solid var(--main);font-size:17px
+}
+button.action{
+width:100%;padding:15px;
+background:var(--main);color:#000;
+font-size:18px;font-weight:bold;border:none;cursor:pointer
+}
+pre{
+margin-top:15px;
+background:#000;
+border:2px solid var(--main);
+padding:12px;
+white-space:pre-wrap;
+word-break:break-all;
+max-height:260px;
+overflow:auto
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOP -->
+<div class="topbar">
+<div class="logo">☠ HACKER PANEL ☠</div>
+<div class="color-box">
+<div class="color" style="background:#00ff99" onclick="setColor('#00ff99')"></div>
+<div class="color" style="background:#00ccff" onclick="setColor('#00ccff')"></div>
+<div class="color" style="background:#ff0033" onclick="setColor('#ff0033')"></div>
+<div class="color" style="background:#cc00ff" onclick="setColor('#cc00ff')"></div>
+<div class="color" style="background:#ffaa00" onclick="setColor('#ffaa00')"></div>
+</div>
+</div>
+
+<!-- MENU -->
+<div class="menu">
+<button onclick="openMenu('tcp')">Bot TCP</button>
+<button onclick="openMenu('jwt')">JWT Token</button>
+</div>
+
+<!-- BOT TCP -->
+<div id="tcp" class="content active">
+<div class="box">
+<h2>🤖 BOT TCP</h2>
+<input id="tcp_uid" placeholder="Nhập UID">
+<select id="tcp_sv">
+<option>VN</option><option>IND</option><option>ID</option>
+<option>NA</option><option>PK</option><option>SG</option><option>ALL</option>
+</select>
+<input id="tcp_key" placeholder="Nhập KEY">
+<button class="action">KẾT BẠN BOT TCP</button>
+<pre>⚠ Chưa gắn API TCP</pre>
+</div>
+</div>
+
+<!-- JWT TOKEN -->
+<div id="jwt" class="content">
+<div class="box">
+<h2>🔐 JWT TOKEN</h2>
+
+<input id="jwt_uid" placeholder="UID">
+<input id="jwt_pass" placeholder="PASSWORD">
+<button class="action" onclick="getJWT()">TẠO TOKEN</button>
+
+<pre id="jwt_rs">Chưa có dữ liệu</pre>
+<button class="action" onclick="copyToken()">📋 COPY TOKEN</button>
+</div>
+</div>
+
+<script>
+let lastToken=""
+
+function setColor(c){
+document.documentElement.style.setProperty('--main',c)
+}
+
+function openMenu(id){
+document.querySelectorAll('.content').forEach(x=>x.classList.remove('active'))
+document.getElementById(id).classList.add('active')
+}
+
+function getJWT(){
+const uid=document.getElementById("jwt_uid").value.trim()
+const pass=document.getElementById("jwt_pass").value.trim()
+if(!uid||!pass){
+jwt_rs.innerText="❌ Thiếu UID hoặc PASSWORD"
+return
+}
+
+jwt_rs.innerText="⏳ Đang tạo token..."
+
+fetch(`http://192.168.1.165:5000/jwt?uid=${uid}&password=${pass}`)
+.then(r=>r.json())
+.then(data=>{
+delete data.credits
+lastToken=data.token || ""
+jwt_rs.innerText=JSON.stringify(data,null,2)
+})
+.catch(()=>{
+jwt_rs.innerText="❌ Lỗi API hoặc CORS"
+})
+}
+
+function copyToken(){
+if(!lastToken){alert("Chưa có token");return}
+navigator.clipboard.writeText(lastToken)
+alert("✅ Đã copy TOKEN")
+}
+</script>
+
+</body>
+</html>
