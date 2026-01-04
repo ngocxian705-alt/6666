@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>HACKER PANEL</title>
 
 <style>
@@ -10,148 +10,277 @@
 *{box-sizing:border-box;font-family:Courier New,monospace}
 body{margin:0;background:#000;color:var(--main)}
 
-/* TOP */
+/* ===== GLITCH ===== */
+.glitch{
+text-shadow:2px 0 red,-2px 0 cyan;
+animation:glitch 1.2s infinite
+}
+@keyframes glitch{
+0%{transform:none}
+25%{transform:skewX(3deg)}
+50%{transform:skewX(-3deg)}
+75%{transform:translateX(2px)}
+100%{transform:none}
+}
+
+/* ===== START ===== */
+#start{
+position:fixed;inset:0;
+display:flex;align-items:center;justify-content:center;
+background:#000;z-index:999
+}
+.start-box{
+border:3px solid var(--main);
+padding:40px;text-align:center;
+box-shadow:0 0 40px var(--main)
+}
+.start-box button{
+margin-top:20px;
+padding:15px 40px;
+background:#000;color:var(--main);
+border:2px solid var(--main);
+font-size:18px;cursor:pointer
+}
+
+/* ===== TOP ===== */
 .topbar{
 display:flex;justify-content:space-between;align-items:center;
 padding:15px 20px;border-bottom:2px solid var(--main)
 }
-.logo{font-size:22px;font-weight:bold;text-shadow:0 0 12px var(--main)}
-.color-box{display:flex;gap:8px}
-.color{width:22px;height:22px;border:2px solid var(--main);cursor:pointer}
+.logo{font-size:22px;font-weight:bold}
 
-/* MENU */
+/* ===== COLOR ===== */
+.color-box{display:flex;gap:8px}
+.color{
+width:22px;height:22px;
+border:2px solid var(--main);
+cursor:pointer
+}
+
+/* ===== MENU ===== */
 .menu{
 display:flex;gap:10px;justify-content:center;
-padding:15px
+padding:15px;flex-wrap:wrap
 }
 .menu button{
 background:#000;color:var(--main);
 border:2px solid var(--main);
-padding:14px 22px;font-size:17px;
-box-shadow:0 0 10px var(--main);cursor:pointer
+padding:12px 20px;
+box-shadow:0 0 10px var(--main);
+cursor:pointer
 }
 
-/* CONTENT */
+/* ===== CONTENT ===== */
 .content{display:none;padding:20px}
 .content.active{display:block}
 .box{
 border:2px solid var(--main);
-padding:20px;box-shadow:0 0 20px var(--main)
+padding:20px;
+box-shadow:0 0 20px var(--main)
 }
 
-/* FORM */
-input,select{
-width:100%;padding:14px;margin-bottom:15px;
+/* ===== FORM ===== */
+input,select,textarea{
+width:100%;padding:14px;margin-bottom:12px;
 background:#000;color:var(--main);
-border:2px solid var(--main);font-size:17px
+border:2px solid var(--main)
 }
+textarea{height:80px}
 button.action{
-width:100%;padding:15px;
+width:100%;padding:14px;
 background:var(--main);color:#000;
-font-size:18px;font-weight:bold;border:none;cursor:pointer
+font-weight:bold;border:none;cursor:pointer
 }
 pre{
-margin-top:15px;
-background:#000;
+margin-top:12px;
 border:2px solid var(--main);
 padding:12px;
-white-space:pre-wrap;
-word-break:break-all;
 max-height:260px;
-overflow:auto
+overflow:auto;
+white-space:pre-wrap
 }
 </style>
 </head>
 
 <body>
 
-<!-- TOP -->
+<!-- START -->
+<div id="start">
+<div class="start-box glitch">
+<h1>☠ HACKER SYSTEM ☠</h1>
+<button onclick="startSystem()">▶ START SYSTEM</button>
+</div>
+</div>
+
+<!-- PANEL -->
+<div id="panel" style="display:none">
+
 <div class="topbar">
-<div class="logo">☠ HACKER PANEL ☠</div>
+<div class="logo glitch">☠ HACKER PANEL ☠</div>
 <div class="color-box">
 <div class="color" style="background:#00ff99" onclick="setColor('#00ff99')"></div>
-<div class="color" style="background:#00ccff" onclick="setColor('#00ccff')"></div>
 <div class="color" style="background:#ff0033" onclick="setColor('#ff0033')"></div>
+<div class="color" style="background:#00ccff" onclick="setColor('#00ccff')"></div>
 <div class="color" style="background:#cc00ff" onclick="setColor('#cc00ff')"></div>
 <div class="color" style="background:#ffaa00" onclick="setColor('#ffaa00')"></div>
+<div class="color" style="background:#ffffff" onclick="setColor('#ffffff')"></div>
 </div>
 </div>
 
-<!-- MENU -->
 <div class="menu">
-<button onclick="openMenu('tcp')">Bot TCP</button>
-<button onclick="openMenu('jwt')">JWT Token</button>
+<button onclick="openMenu('jwt')">JWT</button>
+<button onclick="openMenu('bio')">LONG BIO</button>
+<button onclick="openMenu('ban')">CHECK BAN</button>
+<button onclick="openMenu('nick')">SEARCH NICK</button>
+<button onclick="openMenu('guild')">GUILD</button>
 </div>
 
-<!-- BOT TCP -->
-<div id="tcp" class="content active">
+<!-- JWT -->
+<div id="jwt" class="content active">
 <div class="box">
-<h2>🤖 BOT TCP</h2>
-<input id="tcp_uid" placeholder="Nhập UID">
-<select id="tcp_sv">
-<option>VN</option><option>IND</option><option>ID</option>
-<option>NA</option><option>PK</option><option>SG</option><option>ALL</option>
+<h2 class="glitch">JWT TOKEN</h2>
+<input id="j_uid" placeholder="UID">
+<input id="j_pass" placeholder="PASSWORD">
+<button class="action" onclick="getJWT()">CREATE</button>
+<pre id="j_rs"></pre>
+</div>
+</div>
+
+<!-- BIO -->
+<div id="bio" class="content">
+<div class="box">
+<h2 class="glitch">LONG BIO</h2>
+<select id="bio_mode" onchange="switchBio()">
+<option value="up">UID + PASSWORD</option>
+<option value="acc">ACCESS TOKEN</option>
+<option value="jwt">JWT TOKEN</option>
 </select>
-<input id="tcp_key" placeholder="Nhập KEY">
-<button class="action">KẾT BẠN BOT TCP</button>
-<pre>⚠ Chưa gắn API TCP</pre>
+
+<input id="b_uid" placeholder="UID">
+<input id="b_pass" placeholder="PASSWORD">
+<input id="b_token" placeholder="TOKEN" style="display:none">
+<textarea id="b_bio" placeholder="BIO"></textarea>
+<button class="action" onclick="sendBio()">UPDATE</button>
+<pre id="b_rs"></pre>
 </div>
 </div>
 
-<!-- JWT TOKEN -->
-<div id="jwt" class="content">
+<!-- BAN -->
+<div id="ban" class="content">
 <div class="box">
-<h2>🔐 JWT TOKEN</h2>
-
-<input id="jwt_uid" placeholder="UID">
-<input id="jwt_pass" placeholder="PASSWORD">
-<button class="action" onclick="getJWT()">TẠO TOKEN</button>
-
-<pre id="jwt_rs">Chưa có dữ liệu</pre>
-<button class="action" onclick="copyToken()">📋 COPY TOKEN</button>
+<h2 class="glitch">CHECK BAN</h2>
+<input id="ban_uid" placeholder="UID">
+<button class="action" onclick="checkBan()">CHECK</button>
+<pre id="ban_rs"></pre>
 </div>
+</div>
+
+<!-- NICK -->
+<div id="nick" class="content">
+<div class="box">
+<h2 class="glitch">SEARCH NICK</h2>
+<input id="nick_name" placeholder="NICKNAME">
+<button class="action" onclick="searchNick()">SEARCH</button>
+<pre id="nick_rs"></pre>
+</div>
+</div>
+
+<!-- GUILD -->
+<div id="guild" class="content">
+<div class="box">
+<h2 class="glitch">GUILD</h2>
+<input id="g_uid" placeholder="UID">
+<input id="g_pass" placeholder="PASSWORD">
+<input id="g_id" placeholder="GUILD ID">
+<button class="action" onclick="joinGuild()">JOIN</button>
+<button class="action" onclick="leaveGuild()">LEAVE</button>
+<pre id="g_rs"></pre>
+</div>
+</div>
+
 </div>
 
 <script>
-let lastToken=""
+const API="https://sikibidi.onrender.com"
+
+/* ===== CLICK SOUND ===== */
+const AudioCtx=window.AudioContext||window.webkitAudioContext
+const audioCtx=new AudioCtx()
+function clickSound(){
+const o=audioCtx.createOscillator(),g=audioCtx.createGain()
+o.type="square";o.frequency.value=900;g.gain.value=0.05
+o.connect(g);g.connect(audioCtx.destination)
+o.start();o.stop(audioCtx.currentTime+.05)
+}
+document.addEventListener("click",e=>{
+if(e.target.tagName==="BUTTON"){
+if(audioCtx.state==="suspended")audioCtx.resume()
+clickSound()
+}
+})
+
+function startSystem(){
+start.style.display="none"
+panel.style.display="block"
+}
 
 function setColor(c){
-document.documentElement.style.setProperty('--main',c)
+document.documentElement.style.setProperty("--main",c)
 }
 
 function openMenu(id){
-document.querySelectorAll('.content').forEach(x=>x.classList.remove('active'))
-document.getElementById(id).classList.add('active')
+document.querySelectorAll(".content").forEach(x=>x.classList.remove("active"))
+document.getElementById(id).classList.add("active")
 }
 
 function getJWT(){
-const uid=document.getElementById("jwt_uid").value.trim()
-const pass=document.getElementById("jwt_pass").value.trim()
-if(!uid||!pass){
-jwt_rs.innerText="❌ Thiếu UID hoặc PASSWORD"
-return
-}
-
-jwt_rs.innerText="⏳ Đang tạo token..."
-
-fetch(`http://192.168.1.165:5000/jwt?uid=${uid}&password=${pass}`)
+fetch(`${API}/jwt?uid=${j_uid.value}&password=${j_pass.value}`)
 .then(r=>r.json())
-.then(data=>{
-delete data.credits
-lastToken=data.token || ""
-jwt_rs.innerText=JSON.stringify(data,null,2)
-})
-.catch(()=>{
-jwt_rs.innerText="❌ Lỗi API hoặc CORS"
-})
+.then(d=>j_rs.textContent=JSON.stringify(d,null,2))
 }
 
-function copyToken(){
-if(!lastToken){alert("Chưa có token");return}
-navigator.clipboard.writeText(lastToken)
-alert("✅ Đã copy TOKEN")
+function switchBio(){
+b_uid.style.display=b_pass.style.display="none"
+b_token.style.display="none"
+if(bio_mode.value==="up"){
+b_uid.style.display=b_pass.style.display="block"
+}
+else{
+b_token.style.display="block"
+}
+}
+
+function sendBio(){
+let url=""
+if(bio_mode.value==="up")
+url=`${API}/api?type=longbio_up&uid=${b_uid.value}&password=${b_pass.value}&bio=${b_bio.value}`
+if(bio_mode.value==="acc")
+url=`${API}/api?type=longbio_acc&access_token=${b_token.value}&bio=${b_bio.value}`
+if(bio_mode.value==="jwt")
+url=`${API}/api?type=longbio_jwt&token=${b_token.value}&bio=${b_bio.value}`
+
+fetch(url).then(r=>r.json()).then(d=>b_rs.textContent=JSON.stringify(d,null,2))
+}
+
+function checkBan(){
+fetch(`${API}/api?type=check_ban&uid=${ban_uid.value}`)
+.then(r=>r.json()).then(d=>ban_rs.textContent=JSON.stringify(d,null,2))
+}
+
+function searchNick(){
+fetch(`${API}/api?type=nick&nickname=${nick_name.value}`)
+.then(r=>r.json()).then(d=>nick_rs.textContent=JSON.stringify(d,null,2))
+}
+
+function joinGuild(){
+fetch(`${API}/api?type=join_guild&guild_id=${g_id.value}&uid=${g_uid.value}&password=${g_pass.value}`)
+.then(r=>r.json()).then(d=>g_rs.textContent=JSON.stringify(d,null,2))
+}
+function leaveGuild(){
+fetch(`${API}/api?type=leave_guild&guild_id=${g_id.value}&uid=${g_uid.value}&password=${g_pass.value}`)
+.then(r=>r.json()).then(d=>g_rs.textContent=JSON.stringify(d,null,2))
 }
 </script>
 
 </body>
-</html>
+<html>
